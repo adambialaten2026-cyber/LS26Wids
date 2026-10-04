@@ -1,0 +1,9 @@
+Package: com.ls26wids.tweak
+Name: LS26wids
+Version: 0.1.0
+Architecture: iphoneos-arm64
+Description: iOS 26 style lock screen widgets for iOS 15 (rootless)
+Maintainer: you
+Author: you
+Section: Tweaks
+Depends: mobilesubstrate, preferenceloader
