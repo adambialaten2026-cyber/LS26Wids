@@ -1,0 +1,28 @@
+name: Build LS26wids deb
+on:
+  push:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install tools
+        run: brew install ldid dpkg make
+      - name: Install Theos
+        run: |
+          git clone --recursive https://github.com/theos/theos.git $HOME/theos
+          echo "THEOS=$HOME/theos" >> $GITHUB_ENV
+      - name: Install iOS SDK
+        run: |
+          git clone --depth 1 --filter=blob:none --sparse https://github.com/theos/sdks.git $HOME/sdks
+          cd $HOME/sdks && git sparse-checkout set iPhoneOS16.5.sdk
+          cp -R $HOME/sdks/iPhoneOS16.5.sdk $HOME/theos/sdks/
+      - name: Build rootless deb
+        run: |
+          export PATH="$(brew --prefix make)/libexec/gnubin:$PATH"
+          make package FINALPACKAGE=1 THEOS_PACKAGE_SCHEME=rootless
+      - uses: actions/upload-artifact@v4
+        with:
+          name: LS26wids-deb
+          path: packages/*.deb
