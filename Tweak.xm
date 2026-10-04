@@ -1,5 +1,7 @@
 #import "LSW.h"
 #import <notify.h>
+@interface CSCoverSheetViewController : UIViewController
+@end
 
 %hook CSCoverSheetViewController
 - (void)viewDidLoad {
