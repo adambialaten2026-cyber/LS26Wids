@@ -9,6 +9,5 @@ TWEAK_NAME = LS26wids
 LS26wids_FILES = Tweak.xm LSWManager.m LSWWidgets.m
 LS26wids_CFLAGS = -fobjc-arc -Wno-deprecated-declarations
 LS26wids_FRAMEWORKS = UIKit CoreGraphics QuartzCore EventKit
-LS26wids_PRIVATE_FRAMEWORKS = MobileKeyBag
 
 include $(THEOS_MAKE_PATH)/tweak.mk
