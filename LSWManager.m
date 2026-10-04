@@ -254,7 +254,16 @@ static const CGFloat kSlot = 64, kGap = 12;
 @property (nonatomic, weak) UIView *host;
 @end
 
-extern int MKBGetDeviceLockState(CFDictionaryRef);
+#import <dlfcn.h>
+static int LSWLockState(void) {
+    static int (*fn)(CFDictionaryRef);
+    static dispatch_once_t o;
+    dispatch_once(&o, ^{
+        void *h = dlopen("/System/Library/PrivateFrameworks/MobileKeyBag.framework/MobileKeyBag", RTLD_LAZY);
+        if (h) fn = dlsym(h, "MKBGetDeviceLockState");
+    });
+    return fn ? fn(NULL) : 0;
+}
 
 @implementation LSWManager
 + (instancetype)shared { static LSWManager *m; static dispatch_once_t o; dispatch_once(&o, ^{ m = [LSWManager new]; }); return m; }
